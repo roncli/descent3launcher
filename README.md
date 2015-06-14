@@ -1,2 +1,22 @@
-# descent3launcher
-A cross-platform launcher for Descent 3 implemented in node.js.
+# Descent 3 Launcher
+A cross-platform launcher for Descent 3 dedicated servers implemented in node.js.
+## Usage
+This is the minimum required code to start a Descent 3 server 
+```
+var Launcher = require("./index"),
+    server = new Launcher();
+
+server.options.server.directory = "c:\\Games\\Descent3";
+server.options.game.missionName = "indika3.mn3";
+
+server.createServer(function(err) {
+    if (err) {
+        console.log("There was an error launching the server!");
+        console.log(err);
+    }
+});
+```
+`server.options` has many options which will be documented in a later release.  In the meantime, you can `console.log` the variable to see all the available options that the launcher recognizes.
+## History
+### Version 0.1 - 6/13/2014
+* Initial version.
