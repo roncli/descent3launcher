@@ -80,7 +80,7 @@ Launcher.prototype.options = {
         connectionName: "Direct TCP~IP",
         consolePassword: null,
         gamename: "Descent 3 Dedicated Server",
-        killgoal: null,
+        killGoal: null,
         maxPlayers: 8,
         missionName: null,
         motd: null,
@@ -104,6 +104,8 @@ Launcher.prototype.options = {
         autoSaveDisconnect: false,
         autoSaveLevel: false,
         killMsgFilter: "full",
+        remoteAdmin: false,
+        remoteAdminPass: null,
         serverHudNames: "none",
         setTeamName: [
             "Red",
@@ -386,9 +388,9 @@ Launcher.prototype.createServer = function(callback) {
         return;
     }
 
-    if (this.options.game.killgoal !== null) {
-        if (typeof this.options.game.killgoal !== "number" || this.options.game.killgoal < 1 || this.options.game.killgoal % 1 !== 0) {
-            callback("Invalid option game.killgoal.  Set this to null if you don't want to use a kill goal, otherwise valid values are integers greater than 0.");
+    if (this.options.game.killGoal !== null) {
+        if (typeof this.options.game.killGoal !== "number" || this.options.game.killGoal < 1 || this.options.game.killGoal % 1 !== 0) {
+            callback("Invalid option game.killGoal.  Set this to null if you don't want to use a kill goal, otherwise valid values are integers greater than 0.");
             return;
         }
     }
@@ -442,7 +444,7 @@ Launcher.prototype.createServer = function(callback) {
     }
 
     if (this.options.game.remoteConsolePort !== null) {
-        if (typeof this.options.game.remoteConsolePort !== "number" || this.options.game.remoteConsolePort < 0 || this.options.game.remoteConsolePort > 65535 || this.options.game.remoteconsoleport % 1 !== 0) {
+        if (typeof this.options.game.remoteConsolePort !== "number" || this.options.game.remoteConsolePort < 0 || this.options.game.remoteConsolePort > 65535 || this.options.game.remoteConsolePort % 1 !== 0) {
             callback("Invalid option game.remoteConsolePort.  Valid values are integers 0 through 65535.");
             return;
         }
@@ -607,7 +609,7 @@ Launcher.prototype.createServer = function(callback) {
                     "ConnectionName=" + launcher.options.game.connectionName + eol +
                     (launcher.options.game.consolePassword === null ? "" : "ConsolePassword=" + launcher.options.game.consolePassword + eol) +
                     "GameName=" + launcher.options.game.gamename + eol +
-                    (launcher.options.game.killgoal === null ? "" : "KillGoal=" + launcher.options.game.killgoal.toString() + eol) +
+                    (launcher.options.game.killGoal === null ? "" : "KillGoal=" + launcher.options.game.killGoal.toString() + eol) +
                     "MaxPlayers=" + launcher.options.game.maxPlayers.toString() + eol +
                     "MissionName=" + launcher.options.game.missionName + eol +
                     (launcher.options.game.motd === null ? "" : "MOTD=" + launcher.options.game.motd + eol) +
@@ -771,6 +773,8 @@ Launcher.prototype.createServer = function(callback) {
                     "AutoSaveDisconnect " + (launcher.options.game.autoSaveDisconnect ? "ON" : "OFF") + eol +
                     "AutoSaveLevel " + (launcher.options.game.autoSaveLevel ? "ON" : "OFF") + eol +
                     "KillMsgFilter " + launcher.options.game.killMsgFilter.toUpperCase() + eol +
+                    "RemoteAdmin " + (launcher.options.game.remoteAdmin ? "ON" : "OFF") + eol +
+                    (launcher.options.game.remoteAdminPass === null ? "" : "RemoteAdminPass " + launcher.options.game.remoteAdminPass + eol) +
                     "ServerHudNames " + launcher.options.game.serverHudNames.toUpperCase() + eol +
                     "StatMsgs " + (launcher.options.game.statMsgs ? "ON" : "OFF") + eol;
 
