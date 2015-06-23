@@ -7,7 +7,7 @@ A cross-platform launcher for Descent 3 dedicated servers implemented in node.js
 This is the minimum required code to start a Descent 3 server 
 
 ```
-var Launcher = require("./index"),
+var Launcher = require("descent3launcher"),
     server = new Launcher();
 
 server.options.server.directory = "c:\\Games\\Descent3";
