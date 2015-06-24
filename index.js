@@ -7,9 +7,21 @@ var fs = require("fs"),
     Deferred = promise.Deferred,
     all = promise.all;
 
-function Launcher() {}
+/**
+ * Constructor for descent3launcher.
+ * @returns {Launcher} The instantiated launcher.
+ * @constructor
+ */
+function Launcher() {
+    "use strict";
 
-Launcher.regions = {
+    return this;
+}
+
+/**
+ * Constants for tracker regions.
+ */
+Launcher.regions = Object.freeze({
     noRegion: 0,
     southeastUS: 1,
     westernUS: 2,
@@ -23,17 +35,23 @@ Launcher.regions = {
     africa: 10,
     australiaNewZealand: 11,
     centralAmericaSouthAmerica: 12
-};
+});
 
-Launcher.difficulties = {
+/**
+ * Constants for game difficulties.
+ */
+Launcher.difficulties = Object.freeze({
     Trainee: 0,
     Rookie: 1,
     Hotshot: 2,
     Ace: 3,
     Insane: 4
-};
+});
 
-Launcher.prototype.options = {
+/**
+ * Default options.
+ */
+Launcher.defaultOptions = Object.freeze({
     server: {
         directory: null,
         port: 2092,
@@ -79,14 +97,14 @@ Launcher.prototype.options = {
         brightPlayers: false,
         connectionName: "Direct TCP~IP",
         consolePassword: null,
-        gamename: "Descent 3 Dedicated Server",
+        gameName: "Descent 3 Dedicated Server",
         killGoal: null,
         maxPlayers: 8,
         missionName: null,
         motd: null,
         numTeams: 2,
         peer2peer: null,
-        permissable: null,
+        permissible: null,
         pps: 20,
         randomizeRespawn: true,
         remoteConsolePort: null,
@@ -96,7 +114,7 @@ Launcher.prototype.options = {
         setDifficulty: Launcher.difficulties.Insane,
         setLevel: 1,
         timeLimit: null,
-        useSmoothing: true,
+        useSmoothing: false,
 
         // Settings available through autoexec file.  Anything set here will override the settings above.
         allowTeamChange: true,
@@ -136,6 +154,7 @@ Launcher.prototype.options = {
             napalm: true,
             omegacannon: true,
             plasmacannon: true,
+            superlaser: true,
             vauss: true
         },
         secondaries: {
@@ -235,8 +254,15 @@ Launcher.prototype.options = {
             y1securitypass: true // Y-1 Security Pass
         }
     }
-};
+});
 
+// Copy the default options to the prototype.
+Launcher.prototype.options = JSON.parse(JSON.stringify(Launcher.defaultOptions));
+
+/**
+ * Creates a new Descent 3 server.
+ * @param {function()|function(string)} callback The callback function.
+ */
 Launcher.prototype.createServer = function(callback) {
     "use strict";
 
@@ -320,7 +346,7 @@ Launcher.prototype.createServer = function(callback) {
                         return;
                     }
 
-                    if (typeof this.options.server.trackers[index].port !== "number" || this.options.server.trackers[index].port < 0 || this.options.server.trackers[index].port > 65535 || tracker.port % 1 !== 0) {
+                    if (typeof this.options.server.trackers[index].port !== "number" || this.options.server.trackers[index].port < 0 || this.options.server.trackers[index].port > 65535 || this.options.server.trackers[index].port % 1 !== 0) {
                         callback("Invalid option server.trackers port.  Valid values are integers 0 through 65535.");
                         return;
                     }
@@ -383,8 +409,8 @@ Launcher.prototype.createServer = function(callback) {
         }
     }
 
-    if (typeof this.options.game.gamename !== "string" || this.options.game.gamename.length === 0) {
-        callback("Invalid option game.gamename.  This must be a nonzero-length string.");
+    if (typeof this.options.game.gameName !== "string" || this.options.game.gameName.length === 0) {
+        callback("Invalid option game.gameName.  This must be a nonzero-length string.");
         return;
     }
 
@@ -420,15 +446,15 @@ Launcher.prototype.createServer = function(callback) {
     }
 
     if (this.options.game.peer2peer !== null) {
-        if (typeof this.options.game.peer2peer !== "boolean" || (this.options.game.peer2peer === true && this.options.game.permissable)) {
-            callback("Invalid option game.peer2peer.  Set this to null if you are using client/server or permissable client/server, otherwise set to true and do not set both game.peer2peer and game.permissable to true.");
+        if (typeof this.options.game.peer2peer !== "boolean" || (this.options.game.peer2peer === true && this.options.game.permissible)) {
+            callback("Invalid option game.peer2peer.  Set this to null if you are using client/server or permissible client/server, otherwise set to true and do not set both game.peer2peer and game.permissible to true.");
             return;
         }
     }
 
-    if (this.options.game.permissable !== null) {
-        if (typeof this.options.game.permissable !== "boolean") {
-            callback("Invalid option game.permissable.  Set this to null if you are using client/server or peer to peer, otherwise set to true.");
+    if (this.options.game.permissible !== null) {
+        if (typeof this.options.game.permissible !== "boolean") {
+            callback("Invalid option game.permissible.  Set this to null if you are using client/server or peer to peer, otherwise set to true.");
             return;
         }
     }
@@ -608,14 +634,14 @@ Launcher.prototype.createServer = function(callback) {
                     "BrightPlayers=" + (launcher.options.game.brightPlayers ? "1" : "0") + eol +
                     "ConnectionName=" + launcher.options.game.connectionName + eol +
                     (launcher.options.game.consolePassword === null ? "" : "ConsolePassword=" + launcher.options.game.consolePassword + eol) +
-                    "GameName=" + launcher.options.game.gamename + eol +
+                    "GameName=" + launcher.options.game.gameName + eol +
                     (launcher.options.game.killGoal === null ? "" : "KillGoal=" + launcher.options.game.killGoal.toString() + eol) +
                     "MaxPlayers=" + launcher.options.game.maxPlayers.toString() + eol +
                     "MissionName=" + launcher.options.game.missionName + eol +
                     (launcher.options.game.motd === null ? "" : "MOTD=" + launcher.options.game.motd + eol) +
                     (launcher.options.game.numTeams === null ? "" : "NumTeams=" + launcher.options.game.numTeams.toString() + eol) +
                     (launcher.options.game.peer2peer === null ? "" : "Peer2Peer=" + (launcher.options.game.peer2peer ? "1" : "0") + eol) +
-                    (launcher.options.game.permissable === null ? "" : "Permissable=" + (launcher.options.game.permissable ? "1" : "0") + eol) +
+                    (launcher.options.game.permissible === null ? "" : "Permissable=" + (launcher.options.game.permissible ? "1" : "0") + eol) +
                     "PPS=" + launcher.options.game.pps.toString() + eol +
                     "RandomizeRespawn=" + (launcher.options.game.randomizeRespawn ? "1" : "0") + eol +
                     (launcher.options.game.remoteConsolePort === null ? "" : "RemoteConsolePort=" + launcher.options.game.remoteConsolePort.toString() + eol) +
@@ -760,7 +786,7 @@ Launcher.prototype.createServer = function(callback) {
                 }
 
                 // Create the MPS file.
-                multiplayerSettings = "name\t" + launcher.options.game.gamename + eol +
+                multiplayerSettings = "name\t" + launcher.options.game.gameName + eol +
                     (launcher.options.allowed.ships.blackpyro === false ? "ShipBan\tBlack Pyro" + eol : "") +
                     (launcher.options.allowed.ships.magnumaht === false ? "ShipBan\tMagnum-AHT" + eol : "") +
                     (launcher.options.allowed.ships.phoenix === false ? "ShipBan\tPhoenix" + eol : "") +
@@ -905,12 +931,12 @@ Launcher.prototype.createServer = function(callback) {
                                         options.push("-nomultibmp");
                                     }
                                     if (launcher.options.server.playerMessages) {
-                                        options.push("-playermessages")
+                                        options.push("-playermessages");
                                     }
                                     try {
                                         childProcess.spawn("cmd", options, {});
-                                    } catch (err) {
-                                        callback("There was an error while creating the server: " + err.toString())
+                                    } catch (spawnErr) {
+                                        callback("There was an error while creating the server: " + spawnErr.toString());
                                     }
                                 } else {
                                     // Linux/Mac
@@ -934,12 +960,12 @@ Launcher.prototype.createServer = function(callback) {
                                         options.push("-nomultibmp");
                                     }
                                     if (launcher.options.server.playerMessages) {
-                                        options.push("-playermessages")
+                                        options.push("-playermessages");
                                     }
                                     try {
                                         childProcess.spawn("main", options, {cwd: launcher.options.server.directory});
-                                    } catch (err) {
-                                        callback("There was an error while creating the server: " + err.toString())
+                                    } catch (spawnErr) {
+                                        callback("There was an error while creating the server: " + spawnErr.toString());
                                     }
                                 }
                                 callback();
@@ -947,12 +973,15 @@ Launcher.prototype.createServer = function(callback) {
                         },
 
                         function() {
+                            return this;
                         }
-                    )
+                    );
                 });
             },
 
-            function() {}
+            function() {
+                return this;
+            }
         );
     });
 };
