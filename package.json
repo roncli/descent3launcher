@@ -2,6 +2,10 @@
     "name": "descent3launcher",
     "version": "0.1.1",
     "description": "A cross-platform launcher for Descent 3 dedicated servers implemented in node.js.",
+    "keywords": [
+        "Descent 3",
+        "Launcher"
+    ],
     "homepage": "https://github.com/roncli/descent3launcher",
     "bugs": {
         "url": "https://github.com/roncli/descent3launcher/issues",
