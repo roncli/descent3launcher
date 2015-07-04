@@ -118,7 +118,7 @@ The game options control the behavior of a multiplayer game, and are applied in 
 
 `server.options.game.setLevel` - The level of the mission set to start on.  Default is 1.
 
-`server.options.game.setTeamname` - An array of 4 strings that correspond to the team names that will be displayed in game.  Default values are "Red", "Blue", "Green", or "Yellow".
+`server.options.game.setTeamName` - An array of 4 strings that correspond to the team names that will be displayed in game.  Default values are "Red", "Blue", "Green", or "Yellow".
 
 `server.options.game.statMsgs` - A boolean that determines whether to include random statistical messages for kills throughout the game.  Default is true.
 
