@@ -324,6 +324,10 @@ Each element in the `server.options.server.trackers` array should have the follo
 
 ## History
 
+### Version 0.1.3 - 7/4/2015
+
+* Fix `omegacannon` to be disabled by default.
+
 ### Version 0.1.2 - 6/24/2015
 
 * Change `gamename` to `gameName`.

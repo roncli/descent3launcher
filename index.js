@@ -152,7 +152,7 @@ Launcher.defaultOptions = Object.freeze({
             massdriver: true,
             microwave: true,
             napalm: true,
-            omegacannon: true,
+            omegacannon: false,
             plasmacannon: true,
             superlaser: true,
             vauss: true

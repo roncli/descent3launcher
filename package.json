@@ -1,6 +1,6 @@
 {
     "name": "descent3launcher",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "description": "A cross-platform launcher for Descent 3 dedicated servers implemented in node.js.",
     "keywords": [
         "Descent 3",
